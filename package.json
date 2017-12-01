@@ -1,0 +1,20 @@
+{
+  "name": "kachelmann",
+  "version": "1.0.0",
+  "description": "Kachelmann is a Discord bot which provides you with weather information every day at a specific time.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/4dams/kachelmann"
+  },
+  "author": "Juri Adams",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "discord.js": "^11.2.1",
+    "moment": "^2.19.3"
+  }
+}
