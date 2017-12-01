@@ -5,7 +5,12 @@ const moment = require('moment');
 const colors = require('colors');
 const request = require('request');
 const kachelmann = require('./config.json');
-const users = require('./users.json')
+const fs = require('fs');
+
+var data = fs.readFileSync('./users.json')
+var users = JSON.parse(data);
+console.log(users);
+
 
 const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasking the grass", "Smelling on leaves"]
 
@@ -21,17 +26,30 @@ client.on('message', msg => {
       var words = msg.content.split(' ');
       words.shift();
       if ( words[0] == "register" ) {
-        users.testID = "bow-bow";
-        console.log(msg.author.id);
+
+        var time = words[1]
+
+        var id = {
+          id: msg.author.id,
+          time: time
+        }
+
+        var data = JSON.stringify(id, null, 2)
+        fs.writeFile('./users.json', data, success)
+
+        function success(){
+          console.log('success')
+        }
       }
     }
   }
 
-  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix + "lookup")) {
+  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix + " lookup")) {
 
     // Splitting the message into single words, adding them to an array called "words"
     var words = msg.content.split(' ');
     // Removing the first word of the message, "/kachelmann" in this case
+    words.shift();
     words.shift();
     // We then put the array back togeter to a string, each word seperated by a space
     var city = words.join(' ');
