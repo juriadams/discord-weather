@@ -4,9 +4,10 @@ const client = new Discord.Client();
 const moment = require('moment');
 const colors = require('colors');
 const request = require('request');
-const kachelmann = require("./config.json");
+const kachelmann = require('./config.json');
+const users = require('./users.json')
 
-const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in"]
+const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasking the grass", "Smelling on leaves"]
 
 // Logging in console when bot connected
 client.on('ready', function() {
@@ -14,7 +15,19 @@ client.on('ready', function() {
 });
 
 client.on('message', msg => {
-  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix)) {
+
+  if (msg.channel.type == "dm") {
+    if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix)) {
+      var words = msg.content.split(' ');
+      words.shift();
+      if ( words[0] == "register" ) {
+        users.testID = "bow-bow";
+        console.log(msg.author.id);
+      }
+    }
+  }
+
+  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix + "lookup")) {
 
     // Splitting the message into single words, adding them to an array called "words"
     var words = msg.content.split(' ');
@@ -177,6 +190,7 @@ client.on('message', msg => {
         // Get a random image from unsplash.com depending on the current weather
         var url_img = "https://source.unsplash.com/random?" + weather.main
 
+        // Getting the image's url to link it
         var r = request(url_img, function (e, response) {
           r.uri
           response.request.uri
