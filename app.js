@@ -45,7 +45,7 @@ client.on('message', msg => {
         // Adding a little flag emoji behind the country tag
         var flag = ":flag_" + info.sys.country.toLowerCase() + ":"
 
-        //
+        // Capitalizing the first letter of the weather description
         var weather_disc = weather.description.charAt(0).toUpperCase() + weather.description.slice(1);
 
         // Really long section for specifying an emoji fitting the the current weather state
@@ -172,21 +172,30 @@ client.on('message', msg => {
           temp_icon = ":snowman2:";
         }
 
+        // Get a random image from unsplash.com depending on the current weather
+        var url_img = "https://source.unsplash.com/1920x1080/?" + weather.main
+
+        var r = request(url_img, function (e, response) {
+          r.uri
+          response.request.uri
+        })
+
 
         // Message layout for the bot's response
-        let embed = {
-          title: "__Kachelmann Weather Report__",
-          //thumbnail: { height: 64, width: 64, url: mem.user.avatarURL },
-          description: "Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*Weather data for " + moment().format('MMMM Do YYYY') + "*",
-          color: 0x8DE969,
-          fields: [
-            { name: "__Current Weather:__", value: "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", inline: true },
-            { name: "__Current Temperature:__", value: "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", inline: true },
-            { name: "__Sunrise and Sunset:__", value: "Sunrise at **" + sunrise + " CET** :sunny:️\nSunset at **" + sunset + " CET** :crescent_moon:", inline: true },
-            { name: "__Air:__", value: "Humidity: **" + info.main.humidity + "%**\nWind speed: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "°**", inline: true }
-          ],
-          footer: { text: "[" + moment().format('LTS') + "] Kachelmann Bot | GitHub: 4dams/Kachelmann"}
-        }
+        const embed = new Discord.RichEmbed()
+          // .setTitle("This is your title, it can hold 256 characters")
+          .setAuthor("Kachelmann", "https://i.imgur.com/kh5TlcX.png")
+          .setColor(0x8DE969)
+          .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
+          .setFooter("Sourcecode on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
+          .setImage(r.uri.href)
+          .addBlankField()
+          .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
+          .addField("__Current Temperature:__", "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", true)
+          .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
+          .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
+          .addBlankField()
+
 
         // Sending the bot reply
         msg.channel.send({embed});
