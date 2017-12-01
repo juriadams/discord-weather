@@ -45,6 +45,9 @@ client.on('message', msg => {
         // Adding a little flag emoji behind the country tag
         var flag = ":flag_" + info.sys.country.toLowerCase() + ":"
 
+        //
+        var weather_disc = weather.description.charAt(0).toUpperCase() + weather.description.slice(1);
+
         // Really long section for specifying an emoji fitting the the current weather state
         var weather_icon;
 
@@ -177,7 +180,7 @@ client.on('message', msg => {
           description: "Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*Weather data for " + moment().format('MMMM Do YYYY') + "*",
           color: 0x8DE969,
           fields: [
-            { name: "__Current Weather:__", value: "**" + weather.main + " " +  weather_icon + "**\n*(" + weather.description + ")*", inline: true },
+            { name: "__Current Weather:__", value: "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", inline: true },
             { name: "__Current Temperature:__", value: "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", inline: true },
             { name: "__Sunrise and Sunset:__", value: "Sunrise at **" + sunrise + " CET** :sunny:️\nSunset at **" + sunset + " CET** :crescent_moon:", inline: true },
             { name: "__Air:__", value: "Humidity: **" + info.main.humidity + "%**\nWind speed: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "°**", inline: true }
