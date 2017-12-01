@@ -5,9 +5,6 @@ const colors = require('colors');
 const request = require('request');
 const kachelmann = require("./config.json");
 
-var city;
-var city_converted;
-
 //var requestMap = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + kachelmann.weather_api.units
 
 client.on('ready', function() {
@@ -24,30 +21,41 @@ client.on('message', msg => {
     // We then put the array back togeter to a string, each word seperated by a space
     var city = words.join(' ');
 
+    // Layout of the request url
     var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + kachelmann.weather_api.units
 
+    // Initiating the request
     request(url, function(error, response, body) {
 
       if (!error) {
         var info = JSON.parse(body);
-        //console.log(body);
         console.log(colors.green('[' + moment().format('LTS') + '] Retreived info for city called "' + city + '".'));
 
-        // Clarifying information...
-        var weather = info.weather[0]
+        // Breaking down the weather-array
+        var weather = info.weather[0];
 
+        // Converting the unix timestamps to readable time using moment.js
+        var sunrise = moment.unix(info.sys.sunrise).format('LTS');
+        var sunset = moment.unix(info.sys.sunset).format('LTS');
+
+        // Adding a little flag emoji behind the country tag
+        var flag = ":flag_" + info.sys.country.toLowerCase() + ":"
+
+        // Message layout for the bot's response
         let embed = {
           title: "__Kachelmann Weather Report__",
           //thumbnail: { height: 64, width: 64, url: mem.user.avatarURL },
-          description: "Here's your requested weather report for **" + info.name + "** (" + info.sys.country + ") \n*Weather data for " + moment().format('MMMM Do YYYY') + "*",
+          description: "Here's your requested weather report for **" + info.name + "** (" + info.sys.country + " " + flag + ") \n*Weather data for " + moment().format('MMMM Do YYYY') + "*",
           color: 0x8DE969,
           fields: [
             { name: "__Current Weather:__", value: "**" + weather.main + "**\n*(" + weather.description + ")*", inline: true },
-            { name: "__Current Temperature:__", value: "It's currently **" + info.main.temp + "°C** \n*(" + info.main.temp_min + "°C - " + info.main.temp_max + "°C)*", inline: true }
+            { name: "__Current Temperature:__", value: "It's currently **" + info.main.temp + "°C** \n*(" + info.main.temp_min + "°C to " + info.main.temp_max + "°C)*", inline: true },
+            { name: "__Sunrise and Sunset:__", value: "Sunrise at **" + sunrise + " CET** 🌞\nSunset at **" + sunset + " CET** 🌙"}
           ],
           footer: { text: "[" + moment().format('LTS') + "] Kachelmann Bot | GitHub: 4dams/Kachelmann"}
         }
 
+        // Sending the bot reply
         msg.channel.send({embed});
 
       }
