@@ -5,11 +5,11 @@ const moment = require('moment');
 const colors = require('colors');
 const request = require('request');
 const kachelmann = require('./config.json');
-const fs = require('fs');
+const jsonfile = require('jsonfile');
 
-var data = fs.readFileSync('./users.json')
-var users = JSON.parse(data);
-console.log(users);
+
+let users = require('./users.json');
+const file = './users.json'
 
 
 const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasking the grass", "Smelling on leaves"]
@@ -27,19 +27,14 @@ client.on('message', msg => {
       words.shift();
       if ( words[0] == "register" ) {
 
-        var time = words[1]
+        // This is where users are supposed to get added to the jsonfile
 
-        var id = {
-          id: msg.author.id,
-          time: time
-        }
+        const username = "member.user.username"
+        const discrim = "member.user.discriminator"
 
-        var data = JSON.stringify(id, null, 2)
-        fs.writeFile('./users.json', data, success)
+        users = [...users, { username, discrim }]
+        jsonfile.writeFileSync(file, users)
 
-        function success(){
-          console.log('success')
-        }
       }
     }
   }
@@ -48,8 +43,9 @@ client.on('message', msg => {
 
     // Splitting the message into single words, adding them to an array called "words"
     var words = msg.content.split(' ');
-    // Removing the first word of the message, "/kachelmann" in this case
+    // Removing the first word of the message, the prefix in this case
     words.shift();
+    // Removing another word, the "lookup" in this case
     words.shift();
     // We then put the array back togeter to a string, each word seperated by a space
     var city = words.join(' ');
