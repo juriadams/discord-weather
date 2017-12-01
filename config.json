@@ -1,0 +1,15 @@
+{
+
+  "discord": {
+    "administrators": ["317037284463476736"],
+    "server": "386169374605705218",
+    "token": "your discord token here",
+    "prefix": "/kachelmann"
+  },
+
+  "weather_api": {
+    "key": "your openweathermap api key here",
+    "units": "metric"
+  }
+
+}
