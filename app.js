@@ -6,6 +6,8 @@ const colors = require('colors');
 const request = require('request');
 const kachelmann = require("./config.json");
 
+const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in"]
+
 // Logging in console when bot connected
 client.on('ready', function() {
   console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann connected successfully.'));
@@ -23,7 +25,7 @@ client.on('message', msg => {
 
     // Response before starting the request
     console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann request received.'));
-    msg.channel.send('Searching info for city called **' + city + '**...');
+    msg.channel.send(`${lookup[Math.floor(lookup.length * Math.random())]} **` + city + `**...`);
 
     // Layout of the request url
     var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + kachelmann.weather_api.units
@@ -173,7 +175,7 @@ client.on('message', msg => {
         }
 
         // Get a random image from unsplash.com depending on the current weather
-        var url_img = "https://source.unsplash.com/1920x1080/?" + weather.main
+        var url_img = "https://source.unsplash.com/random?" + weather.main
 
         var r = request(url_img, function (e, response) {
           r.uri
@@ -195,6 +197,7 @@ client.on('message', msg => {
           .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
           .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
           .addBlankField()
+          .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" + r.uri.href + ")***")
 
 
         // Sending the bot reply
