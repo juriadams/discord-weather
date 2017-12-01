@@ -31,7 +31,7 @@ client.on('message', msg => {
     // Initiating the request
     request(url, function(error, response, body) {
 
-      if (!error) {
+      if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log(colors.green('[' + moment().format('LTS') + '] Retreived info for city called "' + city + '".'));
 
@@ -145,33 +145,34 @@ client.on('message', msg => {
         // And once again for the sake of the Temperature
         var temp_icon;
 
-        if ( info.main.temp < -10 ) {
-          temp_icon = ":snowman2:";
-        }
-
-        if ( info.main.temp < 0 ) {
-          temp_icon = ":snowman:";
-        }
-
-        if ( info.main.temp < 10 ) {
-          temp_icon = ":cloud_snow:";
-        }
-
-        if ( info.main.temp < 20 ) {
-          temp_icon = ":white_sun_cloud:";
-        }
-
-        if ( info.main.temp < 30 ) {
-          temp_icon = ":sunny:";
+        if ( info.main.temp > 40) {
+          temp_icon = ":thermometer:";
         }
 
         if ( info.main.temp < 40 ) {
           temp_icon = ":thermometer:";
         }
 
-        if ( info.main.temp > 40) {
-          temp_icon = ":thermometer:";
+        if ( info.main.temp < 30 ) {
+          temp_icon = ":sunny:";
         }
+
+        if ( info.main.temp < 20 ) {
+          temp_icon = ":white_sun_cloud:";
+        }
+
+        if ( info.main.temp < 10 ) {
+          temp_icon = ":cloud_snow:";
+        }
+
+        if ( info.main.temp < 0 ) {
+          temp_icon = ":snowman:";
+        }
+
+        if ( info.main.temp < -10 ) {
+          temp_icon = ":snowman2:";
+        }
+
 
         // Message layout for the bot's response
         let embed = {
@@ -182,7 +183,8 @@ client.on('message', msg => {
           fields: [
             { name: "__Current Weather:__", value: "**" + weather.main + " " +  weather_icon + "**\n*(" + weather.description + ")*", inline: true },
             { name: "__Current Temperature:__", value: "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", inline: true },
-            { name: "__Sunrise and Sunset:__", value: "Sunrise at **" + sunrise + " CET** :sunny:️\nSunset at **" + sunset + " CET** :crescent_moon:"}
+            { name: "__Sunrise and Sunset:__", value: "Sunrise at **" + sunrise + " CET** :sunny:️\nSunset at **" + sunset + " CET** :crescent_moon:", inline: true },
+            { name: "__Air:__", value: "Humidity: **" + info.main.humidity + "%**\nWind speed: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "°**", inline: true }
           ],
           footer: { text: "[" + moment().format('LTS') + "] Kachelmann Bot | GitHub: 4dams/Kachelmann"}
         }
