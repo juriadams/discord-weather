@@ -93,10 +93,6 @@ client.on('message', msg => {
           var weather_icon = ":fog:";
         }
 
-        //
-        // And all of it again for night time
-        //
-
         if ( weather.icon == "01n") {
           // Clear sky at night
           var weather_icon = ":night_with_stars:";
@@ -178,7 +174,7 @@ client.on('message', msg => {
         let embed = {
           title: "__Kachelmann Weather Report__",
           //thumbnail: { height: 64, width: 64, url: mem.user.avatarURL },
-          description: "Here's your requested weather report for **" + info.name + "** (" + info.sys.country + " " + flag + ") \n*Weather data for " + moment().format('MMMM Do YYYY') + "*",
+          description: "Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*Weather data for " + moment().format('MMMM Do YYYY') + "*",
           color: 0x8DE969,
           fields: [
             { name: "__Current Weather:__", value: "**" + weather.main + " " +  weather_icon + "**\n*(" + weather.description + ")*", inline: true },
