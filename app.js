@@ -170,7 +170,7 @@ client.on('message', msg => {
         }
 
         if ( info.main.temp > 40) {
-          temp_icon ":thermometer:";
+          temp_icon = ":thermometer:";
         }
 
         // Message layout for the bot's response
