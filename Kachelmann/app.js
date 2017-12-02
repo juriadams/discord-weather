@@ -7,6 +7,7 @@ const request = require('request');
 const kachelmann = require('./config.json');
 const jsonfile = require('jsonfile');
 const schedule = require('node-schedule');
+const sleep = require('then-sleep');
 const { get } = require('snekfetch');
 
 // let usersMessaged = require('./usersMessaged.json')
@@ -20,6 +21,7 @@ const hello = ["hey", "hallo", "hello", "what's up", "hi", "sup", "how are you",
 // Logging in console when bot connected
 client.on('ready', function() {
   console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann connected successfully.'));
+  status();
 });
 
 
@@ -76,6 +78,50 @@ client.on('message', msg => {
     clientMessage (id, city, type, units);
 
   }
+
+  if (msg.content.toLowerCase().startsWith("add channel ")) {
+    var words = msg.content.split(' ');
+
+    // Shifting the "Add me" away...
+    words.shift();
+
+      // We take the current file and read it
+      var users = jsonfile.readFileSync(file);
+
+      // We take the user input to add him to the list
+      var id = msg.channel.id;
+
+      // Shifting all words again so only the time itself remains
+      words.shift();
+      var time = words[0] + " " + words[1];
+
+      // Shifting all words again (...) so only the city remains
+      words.shift();
+      words.shift();
+
+      // Taking the last part of the string, the city
+      var city = words.join(' ');
+
+      // Setting the type to user to also save this info in the file
+      var type = "channel"
+
+      // Settings the user's units to metric, will be changable later
+      var units = "metric"
+
+      // Adding the new user to the list
+      users = [...users, { id, city, time, units, type }]
+
+      // Writing the new list with the new user back into the file
+      jsonfile.writeFileSync(file, users, {spaces: 2});
+
+      clientMessage (id, city, type, units);
+
+      console.log(colors.green('[' + moment().format('LTS') + '] Added <#' + msg.channel.id + '> to the messaging list!'));
+
+      msg.channel.send(":white_check_mark: **Successfully added <#" + msg.channel.id + "> to my list!**");
+      msg.channel.send("\n*Requesting example message...*")
+
+    }
 
   if (msg.channel.type == "dm") {
 
@@ -369,6 +415,28 @@ function clientMessage (id, city, type, units) {
   });
 
 } // End of function
+
+// Giving the bot a nice status with temperatures of some big cities
+function status (){
+
+  client.user.setGame('Say "Hi" to me! ^_^')
+
+  //getWeather("New York");
+};
+
+// Function for getting weather for above
+function getWeather (city) {
+
+  // Working the same as the big function above, just way smaller since we only need the temperature
+  var units = "metric";
+  var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + units
+  request(url, async function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      client.user.setGame(city + ": " + info.main.temp + "°C")
+    }
+  });
+}
 
 // Logging the bot into Discord
 client.login(kachelmann.discord.token);

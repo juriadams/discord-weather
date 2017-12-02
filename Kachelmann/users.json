@@ -5,5 +5,12 @@
     "time": "6:00 PM",
     "units": "metric",
     "type": "user"
+  },
+  {
+    "id": "386651957214838787",
+    "city": "Berlin",
+    "time": "11:58 PM",
+    "units": "metric",
+    "type": "channel"
   }
 ]
