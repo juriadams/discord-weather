@@ -1,6 +1,7 @@
 # Kachelmann
-<p align="center"><img src="https://i.4da.ms/l_offline_logo_2.png"></p>
-<p align="center">An homage to the swiss weatherman [Jörg Kachelmann](https://en.wikipedia.org/wiki/J%C3%B6rg_Kachelmann)</p>
+<p align="center"><img src="https://i.4da.ms/kahahachelmann.png"></p>
+<p align="center">A Discord Bot to provide you with everyday weather reports!</p>
+<p align="center"><i> - An homage to the swiss weatherman Jörg Kachelmann - </i></p>
 
 
 # To do:
