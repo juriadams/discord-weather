@@ -37,7 +37,7 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
       if ( current_time == entry.time ) {
         console.log(colors.green('[' + moment().format('LTS') + '] Message time!'));
 
-        clientMessage(entry.id, entry.city, entry.type);
+        clientMessage(entry.id, entry.city, entry.type, entry.units);
 
     }
   });
@@ -134,20 +134,24 @@ client.on('message', msg => {
     // Setting the type to channel since it's just a single-time channel lookup
     var type = "channel";
 
+    // Using the default here... Metric units
+    var units = "metric";
+
     // Response before starting the request
     console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann request received.'));
     msg.channel.send(`${lookup[Math.floor(lookup.length * Math.random())]} **` + city + `**...`);
 
-    clientMessage (id, city, type)
+    clientMessage (id, city, type, units);
 
   }
 });
 
 
 // THE function behind the message creation
-function clientMessage (id, city, type) {
+function clientMessage (id, city, type, units) {
+
   // Layout of the request url
-  var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + kachelmann.weather_api.units
+  var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + units
 
   // Initiating the request
   request(url, function(error, response, body) {
@@ -300,6 +304,7 @@ function clientMessage (id, city, type) {
       var r = request(url_img, function (e, response) {
         r.uri
         response.request.uri
+        console.log(r.uri);
       });
 
 
@@ -311,7 +316,7 @@ function clientMessage (id, city, type) {
         .setColor(0xFFFFFF)
         .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
         .setFooter("Sourcecode on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
-        .setImage(r.uri.href)
+        .setImage(r.uri.protocol + "//" + r.uri.host + r.uri.pathname)
         .addBlankField()
         .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
         .addField("__Current Temperature:__", "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", true)
