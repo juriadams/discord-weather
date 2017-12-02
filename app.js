@@ -301,51 +301,44 @@ function clientMessage (id, city, type, units) {
       // Get a random image from unsplash.com depending on the current weather
       var url_img = "https://source.unsplash.com/random?" + weather.main
 
+      // Declaring the variable for the image
       var fucking_image;
 
-      // Getting the image's url to link it
-      var r = request({url: url_img, followAllRedirects: true}, function (e, responseImg) {
-        r.uri
-        responseImg.request.uri
+      var promise = new Promise(function(){
+        var r = request({url: url_img, followAllRedirects: true}, function (e, responseImg) {
+          r.uri
+          responseImg.request.uri
+          fucking_image = r.uri.protocol + "//" + r.uri.host + r.uri.pathname;
+          console.log(fucking_image);
+        })
+      }) // End of promise
 
-        fucking_image = r.uri.protocol + "//" + r.uri.host + r.uri.pathname;
-        console.log(fucking_image);
-        //client.channels.get(id).send(fucking_image);
-      });
 
-      // This may look really weird, but we're basically delaying the message until the request is done.
-      // Yes, this may be good for a promise, but I am not that good yet. :(
-      setTimeout(function () {
-
-        const embed = new Discord.RichEmbed()
-          // .setTitle("This is your title, it can hold 256 characters")
-          .setAuthor("Kachelmann", "https://i.imgur.com/kh5TlcX.png")
-          // .setColor(0x8DE969)
-          .setColor(0xFFFFFF)
-          .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
-          .setFooter("Sourcecode on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
-          .setImage(fucking_image)
-          .addBlankField()
-          .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
-          .addField("__Current Temperature:__", "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", true)
-          .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
-          .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
-          .addBlankField()
-          .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" + fucking_image + ")***")
-
-          if ( type == "user" ) {
-            client.users.get(id).send({embed});
-            client.users.get(id).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*");
-          }
-
-          if ( type == "channel" ) {
-            client.channels.get(id).send({embed});
-            // msg.channel.send({embed});
-          }
-
-      }, 2500);
-
+      const embed = new Discord.RichEmbed()
+        // .setTitle("This is your title, it can hold 256 characters")
+        .setAuthor("Kachelmann", "https://i.imgur.com/kh5TlcX.png")
+        // .setColor(0x8DE969)
+        .setColor(0xFFFFFF)
+        .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
+        .setFooter("Sourcecode on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
+        .setImage(fucking_image)
+        .addBlankField()
+        .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
+        .addField("__Current Temperature:__", "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", true)
+        .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
+        .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
+        .addBlankField()
+        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" + fucking_image + ")***")
+      if ( type == "user" ) {
+        client.users.get(id).send({embed});
+        client.users.get(id).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*");
+      }
+      if ( type == "channel" ) {
+        client.channels.get(id).send({embed});
+        // msg.channel.send({embed});
+      }
     }
+
 
     // Response if city couldn't be found
     if (response.statusCode == 404) {
