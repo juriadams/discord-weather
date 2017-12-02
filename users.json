@@ -2,6 +2,13 @@
   {
     "id": "1337",
     "time": "6:00 PM",
-    "city": "London"
+    "city": "London",
+    "type": "user"
+  },
+  {
+    "id": "317037284463476736",
+    "time": "2:25 PM",
+    "city": "Berlin",
+    "type": "user"
   }
 ]

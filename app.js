@@ -37,7 +37,7 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
       if ( current_time == entry.time ) {
         console.log(colors.green('[' + moment().format('LTS') + '] Message time!'));
 
-        clientMessage(entry.id, entry.city);
+        clientMessage(entry.id, entry.city, entry.type);
 
     }
   });
@@ -502,18 +502,20 @@ function clientMessage (id, city, type) {
         .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" + r.uri.href + ")***")
 
 
-        if ( type == "user") {
-          var member = id;
-          client.users.get(member).send({embed})
-          client.users.get(member).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*")
-        } else {
-          msg.channel.send({embed});
+        if ( type == "user" ) {
+          client.users.get(id).send({embed});
+          client.users.get(id).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*");
         }
 
-      // Sending message to user
-      var member = id;
-      client.users.get(member).send({embed})
-      client.users.get(member).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*")
+        if ( type == "channel" ) {
+          client.channels.get(id).send({embed});
+          // msg.channel.send({embed});
+        }
+
+      // // Sending message to user
+      // var member = id;
+      // client.users.get(member).send({embed});
+      // client.users.get(member).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*");
 
     }
 
