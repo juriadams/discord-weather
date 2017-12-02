@@ -15,7 +15,7 @@ const { get } = require('snekfetch');
 var file = './users.json'
 
 // Random response everytime weather gets requested
-const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasking the grass", "Smelling on leaves"]
+const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasting the grass in", "Searching the far lands for"]
 
 // Logging in console when bot connected
 client.on('ready', function() {
@@ -320,7 +320,7 @@ function clientMessage (id, city, type, units) {
         .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
         .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
         .addBlankField()
-        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!")
+        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.description + "!")
 
         if ( type == "user" ) {
           client.users.get(id).send({embed});
