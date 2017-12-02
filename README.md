@@ -12,11 +12,11 @@
 All the code you see here was made for educational purposes and not for a "download and run" application/bot.
 If you want to run a version of the bot yourself, you will have credit me and this repository. **This code is also licensed under the MIT license.**
 
-### Getting Started
+## Getting Started
 
 If you want to receive your own weather reports, just join the official Kachelmann Discord-Server here and send Kachelmann(#9991) a message.</br>Just say hi and greet him, he will then respond you and tell you what to do!
 
-### To do:
+## Upcoming features:
 
 - [ ] Add timed messages for channels (if requesting user has kick permission)
 - [ ] Add rotating status for big cities
@@ -46,4 +46,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * Weather data provided by [OpenWeatherMap](https://openweathermap.com/)
 * Image of the day presented by [Unsplash](https://unsplash.com/)
+* Made possible by [OVH](https://ovh.de/dlp)
 * All other used modules such as Moment, Colors, Request, Jsonfile and Node-Schedule
