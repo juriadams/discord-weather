@@ -8,6 +8,8 @@ const kachelmann = require('./config.json');
 const jsonfile = require('jsonfile');
 const schedule = require('node-schedule');
 
+const { get } = require('snekfetch');
+
 
 // let usersMessaged = require('./usersMessaged.json')
 var file = './users.json'
@@ -149,7 +151,7 @@ client.on('message', msg => {
 
 
 // THE function behind the message creation
-function clientMessage (id, city, type, units) {
+async function clientMessage (id, city, type, units) {
 
   // Layout of the request url
   var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + units
@@ -311,7 +313,7 @@ function clientMessage (id, city, type, units) {
       //   console.log(image);
       // });
 
-      const { get } = require('snekfetch');
+
 
       const res = await get(url_img);
 
