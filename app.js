@@ -43,36 +43,41 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
 client.on('message', msg => {
 
   if (msg.channel.type == "dm") {
-    if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix)) {
+    if (msg.content.toLowerCase().startsWith("Add me")) {
       var words = msg.content.split(' ');
+
+      // Shifting the "Add me" away...
       words.shift();
-      if ( words[0] == "register" ) {
+      words.shift();
 
         // We take the current file and read it
         var users = jsonfile.readFileSync(file);
 
         // We take the user input to add him to the list
         var id = msg.author.id;
-        var time = "13:40";
+        console.log(id);
+
+        // Shifting all words again so only the time itself remains
+        words.shift();
+        var time = words[0] + words[1];
+        console.log(time);
+
+        // Shifting all words again (...) so only the city remains
+        words.shift();
+        words.shift();
+
+        // Taking the last part of the string, the city
+        var city = words.join(' ');
+        console.log(city);
 
         // Adding the new user to the list
-        users = [...users, { id, time }]
+        users = [...users, { id, time, city }]
 
         // Writing the new list with the new user back into the file
         jsonfile.writeFileSync(file, users, {spaces: 2})
-
-        // Default layout of the users.json
-        // [
-        //   {
-        //     "id": "1337",
-        //     "time": "13:37"
-        //   }
-        // ]
-
       }
 
-      if ( words[0] == "quit") {
-
+      if (msg.content.toLowerCase().startsWith("Remove me")) {
         // We take the current file and read it
         var users = jsonfile.readFileSync(file);
 
@@ -90,7 +95,6 @@ client.on('message', msg => {
 
         // Writing the new list without the user back into the file
         jsonfile.writeFileSync(file, users, {spaces: 2})
-
       }
 
     }
