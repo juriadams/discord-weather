@@ -20,7 +20,7 @@ client.on('ready', function() {
   console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann connected successfully.'));
 });
 
-//
+// Checking if there are any messages to be sent every minute, using schedule for consistency
 var j = schedule.scheduleJob('00 * * * * *', function(){
   console.log('Checking for orders...');
 
