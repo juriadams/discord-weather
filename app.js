@@ -134,8 +134,8 @@ client.on('message', msg => {
 
         console.log(colors.green('[' + moment().format('LTS') + 'Added ' + msg.author.username + ' to the messaging list!'));
 
-        msg.channel.send(":white_check_mark: **Success!**\n\nI have added you to my list!\nYou will now receive a weather report for " + city + " every day at " + time + "!\n*(You can alway write \"remove me\" to stop getting messages!)*");
-        msg.channel.send("*Requesting example message...*")
+        msg.channel.send(":white_check_mark: **Successfully added <@" + msg.author.id + "> to my list for " + city + " every day at " + time + "!");
+        msg.channel.send("\n*Requesting example message...*")
 
       }
 
