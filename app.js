@@ -337,13 +337,13 @@ function clientMessage (id, city, type, units) {
 
     // Response if city couldn't be found
     if (response.statusCode == 404) {
-      msg.channel.send('Sorry, but I couldn\'t find any city called **' + city + '** :frowning:');
+      client.users.get(id).send('Sorry, but I couldn\'t find any city called **' + city + '** :frowning:');
       console.log(colors.yellow('[' + moment().format('LTS') + '] Could not find any city for user input "' + city + '".'));
     }
 
     // Response if any other error occurs
     if (response.statusCode !== 404 && response.statusCode !== 200) {
-      msg.channel.send('An error has occured while retreiving your data.\nPlease contact the bot administrator **4dams#0001** on Discord. :warning:');
+      client.users.get(id).send('An error has occured while retreiving your data.\nPlease contact the bot administrator **4dams#0001** on Discord. :warning:');
       console.log(colors.red('[' + moment().format('LTS') + '] Error retreiving data. Response code: "' + response.statusCode + '".'));
     }
 
