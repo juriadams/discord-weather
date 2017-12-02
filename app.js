@@ -320,7 +320,7 @@ function clientMessage (id, city, type, units) {
         .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
         .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
         .addBlankField()
-        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" +  + ")***")
+        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!")
 
         if ( type == "user" ) {
           client.users.get(id).send({embed});
@@ -337,13 +337,13 @@ function clientMessage (id, city, type, units) {
 
     // Response if city couldn't be found
     if (response.statusCode == 404) {
-      client.users.get(id).send('Sorry, but I couldn\'t find any city called **' + city + '** :frowning:');
+      msg.channel.send('Sorry, but I couldn\'t find any city called **' + city + '** :frowning:');
       console.log(colors.yellow('[' + moment().format('LTS') + '] Could not find any city for user input "' + city + '".'));
     }
 
     // Response if any other error occurs
     if (response.statusCode !== 404 && response.statusCode !== 200) {
-      client.users.get(id).send('An error has occured while retreiving your data.\nPlease contact the bot administrator **4dams#0001** on Discord. :warning:');
+      msg.channel.send('An error has occured while retreiving your data.\nPlease contact the bot administrator **4dams#0001** on Discord. :warning:');
       console.log(colors.red('[' + moment().format('LTS') + '] Error retreiving data. Response code: "' + response.statusCode + '".'));
     }
 
