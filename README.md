@@ -14,13 +14,13 @@ If you want to run a version of the bot yourself, you will have credit me and th
 
 ## Getting Started
 
-If you want to receive your own weather reports, just join the official Kachelmann Discord-Server here and send Kachelmann(#9991) a message.</br>Just say hi and greet him, he will then respond you and tell you what to do!
+If you want to receive your own weather reports, just join the official Kachelmann Discord-Server here and send Kachelmann(#9991) a message.</br>Just say "hi" or "Hello!" to him, he will then tell you what to do! :)
+
+You can also invite him to your own server via this link and add timed channel messages! Just invite him and say hello to him in a private message!
 
 ## Upcoming features:
 
-- [ ] Add timed messages for channels (if requesting user has kick permission)
-- [ ] Add rotating status for big cities
-- [ ] Add units support
+- [ ] Units support (Metric and Imperial)
 
 ## Built With
 
