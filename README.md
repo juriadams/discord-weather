@@ -21,6 +21,7 @@ You can also invite him to your own server via this link and add timed channel m
 ## Upcoming features:
 
 - [ ] Units support (Metric and Imperial)
+- [ ] Command to list all list entries
 
 ## Built With
 
