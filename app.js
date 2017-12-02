@@ -6,12 +6,13 @@ const colors = require('colors');
 const request = require('request');
 const kachelmann = require('./config.json');
 const jsonfile = require('jsonfile');
+const schedule = require('node-schedule');
 
 
 // let usersMessaged = require('./usersMessaged.json')
 var file = './users.json'
 
-
+// Random response everytime weather gets requested
 const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasking the grass", "Smelling on leaves"]
 
 // Logging in console when bot connected
@@ -19,6 +20,20 @@ client.on('ready', function() {
   console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann connected successfully.'));
 });
 
+//
+var j = schedule.scheduleJob('40 * * * * *', function(){
+  console.log('Checking for orders...');
+
+  var users = jsonfile.readFileSync(file);
+
+  //var a = ["a", "b", "c"];
+  users.forEach(function(entry) {
+      console.log(entry);
+  });
+
+});
+
+// When the client receives a message
 client.on('message', msg => {
 
   if (msg.channel.type == "dm") {
@@ -28,17 +43,17 @@ client.on('message', msg => {
       if ( words[0] == "register" ) {
 
         // We take the current file and read it
-        var users_current = jsonfile.readFileSync(file);
+        var users = jsonfile.readFileSync(file);
 
         // We take the user input to add him to the list
         var id = msg.author.id;
         var time = "13:40";
 
         // Adding the new user to the list
-        users_current = [...users_current, { id, time }]
+        users = [...users, { id, time }]
 
         // Writing the new list with the new user back into the file
-        jsonfile.writeFileSync(file, users_current, {spaces: 2})
+        jsonfile.writeFileSync(file, users, {spaces: 2})
 
         // Default layout of the users.json
         // [
@@ -53,22 +68,22 @@ client.on('message', msg => {
       if ( words[0] == "quit") {
 
         // We take the current file and read it
-        var users_current = jsonfile.readFileSync(file);
+        var users = jsonfile.readFileSync(file);
 
         // We take the user id and prepare it to get removed from the list
         var id_removed = msg.author.id
 
         // Initial process of removing user from list (https://stackoverflow.com/a/21150476)
         var users_updated = [];
-        for (var i in users_current)
-          if(users_current[i].id != id_removed)
-            users_updated[users_updated.length] = users_current[i]
+        for (var i in users)
+          if(users[i].id != id_removed)
+            users_updated[users_updated.length] = users[i]
 
         // Replacing old users with new ones
-        users_current = users_updated;
+        users = users_updated;
 
         // Writing the new list without the user back into the file
-        jsonfile.writeFileSync(file, users_current, {spaces: 2})
+        jsonfile.writeFileSync(file, users, {spaces: 2})
 
       }
 

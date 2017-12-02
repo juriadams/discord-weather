@@ -17,6 +17,7 @@
     "discord.js": "^11.2.1",
     "jsonfile": "^4.0.0",
     "moment": "^2.19.3",
+    "node-schedule": "^1.2.5",
     "request": "^2.83.0"
   }
 }
