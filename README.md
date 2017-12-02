@@ -3,6 +3,4 @@ An homage to the swiss weatherman [Jörg Kachelmann](https://en.wikipedia.org/wi
 
 # To do:
 
-- [ ] Replace weather message with function to not always regenerate
-- [ ] Test city after entry
-- [ ] Display more exact info in console
+- [ ] Add timed messages for channels (if user has kick power)
