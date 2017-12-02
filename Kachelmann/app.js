@@ -80,46 +80,83 @@ client.on('message', msg => {
   }
 
   if (msg.content.toLowerCase().startsWith("add channel ")) {
-    var words = msg.content.split(' ');
 
-    // Shifting the "Add me" away...
-    words.shift();
+    if (msg.member.hasPermission("KICK_MEMBERS")) {
+      var words = msg.content.split(' ');
 
-      // We take the current file and read it
-      var users = jsonfile.readFileSync(file);
-
-      // We take the user input to add him to the list
-      var id = msg.channel.id;
-
-      // Shifting all words again so only the time itself remains
-      words.shift();
-      var time = words[0] + " " + words[1];
-
-      // Shifting all words again (...) so only the city remains
-      words.shift();
+      // Shifting the "Add me" away...
       words.shift();
 
-      // Taking the last part of the string, the city
-      var city = words.join(' ');
+        // We take the current file and read it
+        var users = jsonfile.readFileSync(file);
 
-      // Setting the type to user to also save this info in the file
-      var type = "channel"
+        // We take the user input to add him to the list
+        var id = msg.channel.id;
 
-      // Settings the user's units to metric, will be changable later
-      var units = "metric"
+        // Shifting all words again so only the time itself remains
+        words.shift();
+        var time = words[0] + " " + words[1];
 
-      // Adding the new user to the list
-      users = [...users, { id, city, time, units, type }]
+        // Shifting all words again (...) so only the city remains
+        words.shift();
+        words.shift();
 
-      // Writing the new list with the new user back into the file
-      jsonfile.writeFileSync(file, users, {spaces: 2});
+        // Taking the last part of the string, the city
+        var city = words.join(' ');
 
-      clientMessage (id, city, type, units);
+        // Setting the type to user to also save this info in the file
+        var type = "channel"
 
-      console.log(colors.green('[' + moment().format('LTS') + '] Added <#' + msg.channel.id + '> to the messaging list!'));
+        // Settings the user's units to metric, will be changable later
+        var units = "metric"
 
-      msg.channel.send(":white_check_mark: **Successfully added <#" + msg.channel.id + "> to my list!**");
-      msg.channel.send("\n*Requesting example message...*")
+        // Adding the new user to the list
+        users = [...users, { id, city, time, units, type }]
+
+        // Writing the new list with the new user back into the file
+        jsonfile.writeFileSync(file, users, {spaces: 2});
+
+        clientMessage (id, city, type, units);
+
+        console.log(colors.green('[' + moment().format('LTS') + '] Added <#' + msg.channel.id + '> to the messaging list!'));
+
+        msg.channel.send(":white_check_mark: **Successfully added <#" + msg.channel.id + "> to my list!**");
+        msg.channel.send("\n*Requesting example message...*")
+
+      } else {
+
+        msg.channel.send("Sorry! Only people with permission to kick others have access to this command! Please ask an server administrator!")
+
+      }
+    }
+
+    if (msg.content.toLowerCase().startsWith("remove channel")) {
+      if (msg.member.hasPermission("KICK_MEMBERS")) {
+        console.log(colors.green('[' + moment().format('LTS') + '] "Remove me" message received.'));
+
+        // We take the current file and read it
+        var users = jsonfile.readFileSync(file);
+
+        // We take the user id and prepare it to get removed from the list
+        var id_removed = msg.channel.id
+
+        // Initial process of removing user from list (https://stackoverflow.com/a/21150476)
+        var users_updated = [];
+        for (var i in users)
+          if(users[i].id != id_removed)
+            users_updated[users_updated.length] = users[i]
+
+        // Replacing old users with new ones
+        users = users_updated;
+
+        // Writing the new list without the user back into the file
+        jsonfile.writeFileSync(file, users, {spaces: 2})
+
+        console.log(colors.green('[' + moment().format('LTS') + '] Removed ' + msg.channel.username + ' from the messaging list!'));
+
+        msg.channel.send(":white_check_mark: **Successfully removed <#" + msg.channel.id + "> from my list!**")
+
+      }
 
     }
 
