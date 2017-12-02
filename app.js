@@ -134,7 +134,7 @@ client.on('message', msg => {
 
         console.log(colors.green('[' + moment().format('LTS') + 'Added ' + msg.author.username + ' to the messaging list!'));
 
-        msg.channel.send(":white_check_mark: **Successfully added <@" + msg.author.id + "> to my list for " + city + " every day at " + time + "!");
+        msg.channel.send(":white_check_mark: **Successfully added <@" + msg.author.id + "> to my list!**");
         msg.channel.send("\n*Requesting example message...*")
 
       }
@@ -329,7 +329,7 @@ function clientMessage (id, city, type, units) {
         .setAuthor("Kachelmann", "https://i.imgur.com/kh5TlcX.png")
         // .setColor(0x8DE969)
         .setColor(0xFFFFFF)
-        .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n\nDon't want any more weather reports?\n- Simply type \"remove me\"!")
+        .setDescription("Here's your daily weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n\nDon't want any more weather reports?\n***>** Simply type \"remove me\"!*")
         .setFooter("Source code on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
         .attachFile(res.body)
         .setImage('attachment://file.jpg')
