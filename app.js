@@ -7,15 +7,15 @@ const request = require('request');
 const kachelmann = require('./config.json');
 const jsonfile = require('jsonfile');
 const schedule = require('node-schedule');
-
 const { get } = require('snekfetch');
-
 
 // let usersMessaged = require('./usersMessaged.json')
 var file = './users.json'
 
 // Random response everytime weather gets requested
 const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasting the grass in", "Searching the far lands for"]
+
+const hello = ["hey", "hallo", "hello", "what's up", "hi", "sup", "how are you", "whats up", "yo"]
 
 // Logging in console when bot connected
 client.on('ready', function() {
@@ -49,7 +49,52 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
 // When the client receives a message
 client.on('message', msg => {
 
+  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix + " lookup")) {
+
+    // Splitting the message into single words, adding them to an array called "words"
+    var words = msg.content.split(' ');
+    // Removing the first word of the message, the prefix in this case
+    words.shift();
+    // Removing another word, the "lookup" in this case
+    words.shift();
+    // We then put the array back togeter to a string, each word seperated by a space
+    var city = words.join(' ');
+
+    // Setting the channel id
+    var id = msg.channel.id;
+
+    // Setting the type to channel since it's just a single-time channel lookup
+    var type = "channel";
+
+    // Using the default here... Metric units
+    var units = "metric";
+
+    // Response before starting the request
+    console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann request received.'));
+    msg.channel.send(`${lookup[Math.floor(lookup.length * Math.random())]} **` + city + `**...`);
+
+    clientMessage (id, city, type, units);
+
+  }
+
   if (msg.channel.type == "dm") {
+
+    if (msg.author.id == "386168466308071424") {
+      return;
+    }
+
+    if (new RegExp(hello.join("|")).test(msg.content.toLowerCase())) {
+
+      if (msg.author.id == "386168466308071424") {
+        return;
+      } else {
+
+      msg.channel.send(`**Hello there, <@` + msg.author.id + `> ** :wave:\n\nI am <@386168466308071424>, a multifunctional Discord bot which servers you with a lot of information about **weather**! :cloud_snow: \n\n__**Here's a list of what I can do:**__\n- Get the current weather in any city you want\n- Send you weather reports every day at a specific time\n*... but there s already more on its way!*\n\n__**Requesting current weather:**__\nIf you want to know the weather in, let's say Amsterdam :flag_nl: for example, you would just type **"look up Amsterdam**"! **Give it a try!**\nYou can of course, replace Amsterdam with any city of your choice, and I will do my best to get you the current weather info!\n\n__**Requesting daily weather reports:**__\nIf you want to get a weather report every day at a specific time, you can simply write **"Add me 7:15 AM Berlin"**, if you want to get a weather report of Berlin, every day at 7:15 AM! Cool, huh?\nNow, you can choose any time and city you want. **Just stick to the formatting!**\nIf the formatting isn't right, the bot won't message you. :frowning: \nFor times before 12 AM, you would write something like "6:13 AM" or "11:52 AM" and for anything after 12 AM, you would write stuff like "3:21 PM" or maybe even "10:19" PM .\n\n__**No longer receiving weather reports:**__\nIf you don't want to receive any more weather reports, simply write **"Remove me"**, and I will remove you from my list! :bookmark: \n\n__**Interested in how I work?**__\nDamn, that sounds spooky... But my master **4dams**#0001 was so kind and hosted the whole source code on GitHub!\nYou can find everything about me here: https://github.com/4dams/Kachelmann\n\nThat s it about me so far!\nI hope you re having a great day and that I ll hear from you soon! :wave:\n\n*- Kachelmann*`);
+
+      }
+
+    };
+
     if (msg.content.toLowerCase().startsWith("add me ")) {
       console.log(colors.green('[' + moment().format('LTS') + '] "Add me" message received.'));
       var words = msg.content.split(' ');
@@ -116,38 +161,6 @@ client.on('message', msg => {
 
     }
   });
-
-
-// Single weather lookups
-client.on('message', msg => {
-  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix + " lookup")) {
-
-    // Splitting the message into single words, adding them to an array called "words"
-    var words = msg.content.split(' ');
-    // Removing the first word of the message, the prefix in this case
-    words.shift();
-    // Removing another word, the "lookup" in this case
-    words.shift();
-    // We then put the array back togeter to a string, each word seperated by a space
-    var city = words.join(' ');
-
-    // Setting the channel id
-    var id = msg.channel.id;
-
-    // Setting the type to channel since it's just a single-time channel lookup
-    var type = "channel";
-
-    // Using the default here... Metric units
-    var units = "metric";
-
-    // Response before starting the request
-    console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann request received.'));
-    msg.channel.send(`${lookup[Math.floor(lookup.length * Math.random())]} **` + city + `**...`);
-
-    clientMessage (id, city, type, units);
-
-  }
-});
 
 
 // THE function behind the message creation
