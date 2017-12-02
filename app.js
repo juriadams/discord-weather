@@ -151,13 +151,13 @@ client.on('message', msg => {
 
 
 // THE function behind the message creation
-async function clientMessage (id, city, type, units) {
+function clientMessage (id, city, type, units) {
 
   // Layout of the request url
   var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + kachelmann.weather_api.key + "&units=" + units
 
   // Initiating the request
-  request(url, function(error, response, body) {
+  request(url, async function(error, response, body) {
 
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
@@ -303,18 +303,6 @@ async function clientMessage (id, city, type, units) {
       // Get a random image from unsplash.com depending on the current weather
       var url_img = "https://source.unsplash.com/random?" + weather.main
 
-      // // Declaring the variable for the image
-      // var image;
-      //
-      // var r = request({url: url_img, followAllRedirects: true}, function (e, responseImg) {
-      //   r.uri
-      //   responseImg.request.uri
-      //   image = r.uri.protocol + "//" + r.uri.host + r.uri.pathname;
-      //   console.log(image);
-      // });
-
-
-
       const res = await get(url_img);
 
       const embed = new Discord.RichEmbed()
@@ -325,7 +313,7 @@ async function clientMessage (id, city, type, units) {
         .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
         .setFooter("Source code on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
         .addFiles([res.body])
-        .setImage('attachment://file.jpg');
+        .setImage('attachment://file.jpg')
         .addBlankField()
         .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
         .addField("__Current Temperature:__", "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", true)
