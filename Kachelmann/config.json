@@ -1,0 +1,12 @@
+{
+
+  "discord": {
+    "administrators": ["317037284463476736"],
+    "token": "key",
+  },
+
+  "weather_api": {
+    "key": "key"
+  }
+
+}
