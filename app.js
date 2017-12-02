@@ -210,7 +210,7 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
           .addBlankField()
           .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" + r.uri.href + ")***")
 
-        var member = "317037284463476736";
+        var member = entry.id;
         client.users.get(member).send({embed})
         client.users.get(member).send("***Reminder:** You can always type \"Remove me\" to not receive any messages anymore.*")
 
