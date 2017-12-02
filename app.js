@@ -311,7 +311,6 @@ function clientMessage (id, city, type, units) {
       //   console.log(image);
       // });
 
-      const { MessageEmbed } = require('discord.js');
       const { get } = require('snekfetch');
 
       const res = await get(url_img);
