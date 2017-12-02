@@ -312,7 +312,7 @@ function clientMessage (id, city, type, units) {
         .setColor(0xFFFFFF)
         .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
         .setFooter("Source code on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
-        .addFiles([res.body])
+        .attachFile(res.body)
         .setImage('attachment://file.jpg')
         .addBlankField()
         .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
@@ -320,7 +320,7 @@ function clientMessage (id, city, type, units) {
         .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
         .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
         .addBlankField()
-        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" + fucking_image + ")***")
+        .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.main + "!\n***> [Full Resolution Image](" +  + ")***")
 
         if ( type == "user" ) {
           client.users.get(id).send({embed});
