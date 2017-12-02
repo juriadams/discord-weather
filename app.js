@@ -21,14 +21,20 @@ client.on('ready', function() {
 });
 
 //
-var j = schedule.scheduleJob('40 * * * * *', function(){
+var j = schedule.scheduleJob('00 * * * * *', function(){
   console.log('Checking for orders...');
 
   var users = jsonfile.readFileSync(file);
 
-  //var a = ["a", "b", "c"];
   users.forEach(function(entry) {
-      console.log(entry);
+
+    // Everything in here will be exectued for each entry in users.json
+    //console.log(entry);
+    var current_time = moment().format('LT');
+    if ( current_time == entry.time ) {
+      console.log('Match!');
+    }
+
   });
 
 });
