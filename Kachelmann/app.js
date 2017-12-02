@@ -13,7 +13,7 @@ const { get } = require('snekfetch');
 var file = './users.json'
 
 // Random response everytime weather gets requested
-const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasting the grass in", "Searching the far lands for"]
+const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Searching the far lands for"]
 
 const hello = ["hey", "hallo", "hello", "what's up", "hi", "sup", "how are you", "whats up", "yo", "help", "info", "tutorial"]
 
@@ -49,7 +49,7 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
 // When the client receives a message
 client.on('message', msg => {
 
-  if (msg.content.toLowerCase().startsWith(kachelmann.discord.prefix + " lookup")) {
+  if (msg.content.toLowerCase().startsWith("look up")) {
 
     // Splitting the message into single words, adding them to an array called "words"
     var words = msg.content.split(' ');
@@ -356,13 +356,13 @@ function clientMessage (id, city, type, units) {
 
     // Response if city couldn't be found
     if (response.statusCode == 404) {
-      msg.channel.send('Sorry, but I couldn\'t find any city called **' + city + '** :frowning:');
+      client.channels.get(id).send('Sorry, but I couldn\'t find any city called **' + city + '** :frowning:');
       console.log(colors.yellow('[' + moment().format('LTS') + '] Could not find any city for user input "' + city + '".'));
     }
 
     // Response if any other error occurs
     if (response.statusCode !== 404 && response.statusCode !== 200) {
-      msg.channel.send('An error has occured while retreiving your data.\nPlease contact the bot administrator **4dams#0001** on Discord. :warning:');
+      client.channels.get(id).send('An error has occured while retreiving your data.\nPlease contact the bot administrator **4dams#0001** on Discord. :warning:');
       console.log(colors.red('[' + moment().format('LTS') + '] Error retreiving data. Response code: "' + response.statusCode + '".'));
     }
 
