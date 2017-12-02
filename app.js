@@ -38,7 +38,7 @@ var j = schedule.scheduleJob('00 * * * * *', function(){
     //console.log(entry);
     var current_time = moment().format('LT');
       if ( current_time == entry.time ) {
-        console.log(colors.green('[' + moment().format('LTS') + '] Message time!'));
+        console.log(colors.green('[' + moment().format('LTS') + '] Sending timed message!'));
 
         clientMessage(entry.id, entry.city, entry.type, entry.units);
 
@@ -70,7 +70,7 @@ client.on('message', msg => {
     var units = "metric";
 
     // Response before starting the request
-    console.log(colors.green('[' + moment().format('LTS') + '] Kachelmann request received.'));
+    console.log(colors.green('[' + moment().format('LTS') + '] Weather Request received for city ' + city));
     msg.channel.send(`${lookup[Math.floor(lookup.length * Math.random())]} **` + city + `**...`);
 
     clientMessage (id, city, type, units);
@@ -96,7 +96,6 @@ client.on('message', msg => {
     };
 
     if (msg.content.toLowerCase().startsWith("add me ")) {
-      console.log(colors.green('[' + moment().format('LTS') + '] "Add me" message received.'));
       var words = msg.content.split(' ');
 
       // Shifting the "Add me" away...
@@ -107,12 +106,10 @@ client.on('message', msg => {
 
         // We take the user input to add him to the list
         var id = msg.author.id;
-        console.log(id);
 
         // Shifting all words again so only the time itself remains
         words.shift();
         var time = words[0] + " " + words[1];
-        console.log(time);
 
         // Shifting all words again (...) so only the city remains
         words.shift();
@@ -120,16 +117,20 @@ client.on('message', msg => {
 
         // Taking the last part of the string, the city
         var city = words.join(' ');
-        console.log(city);
 
         // Setting the type to user to also save this info in the file
         var type = "user"
 
+        // Settings the user's units to metric, will be changable later
+        var units = "metric"
+
         // Adding the new user to the list
-        users = [...users, { id, time, city, type }]
+        users = [...users, { id, city, time, units, type }]
 
         // Writing the new list with the new user back into the file
         jsonfile.writeFileSync(file, users, {spaces: 2})
+
+        console.log(colors.green('[' + moment().format('LTS') + 'Added ' + msg.author.username + ' to the messaging list!'));
 
         msg.channel.send(":white_check_mark: **Success!**\n\nI have added you to my list with the following settings:\n``` UserID  :  " + msg.author.id +"\n   Time  :  " + time + "\n   City  :  " + city + "```\n***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*")
       }
@@ -155,6 +156,8 @@ client.on('message', msg => {
         // Writing the new list without the user back into the file
         jsonfile.writeFileSync(file, users, {spaces: 2})
 
+        console.log(colors.green('[' + moment().format('LTS') + 'Removed ' + msg.author.username + ' from the messaging list!'));
+
         msg.channel.send(":white_check_mark: **Success!**\n\nYou have been removed from my list and will no longer receive any messages!\n\n***Remember:** You can always return by simply typing `Add me 10:00 AM Berlin` for example!*")
 
       }
@@ -174,7 +177,6 @@ function clientMessage (id, city, type, units) {
 
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      console.log(colors.green('[' + moment().format('LTS') + '] Retreived info for city called "' + city + '".'));
 
       // Breaking down the weather-array
       var weather = info.weather[0];
