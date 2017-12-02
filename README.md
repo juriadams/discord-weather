@@ -16,7 +16,7 @@ If you want to run a version of the bot yourself, you will have credit me and th
 
 If you want to receive your own weather reports, just join the official Kachelmann Discord-Server here and send Kachelmann(#9991) a message.</br>Just say "hi" or "Hello!" to him, he will then tell you what to do! :)
 
-You can also invite him to your own server via this link and add timed channel messages! Just invite him and say hello to him in a private message!
+**You can also invite him to your own server via [this link](https://goo.gl/rWEf1L) and add timed channel messages! Just invite him and say hello to him in a private message!**
 
 ## Upcoming features:
 
