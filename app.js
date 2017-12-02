@@ -8,8 +8,8 @@ const kachelmann = require('./config.json');
 const jsonfile = require('jsonfile');
 
 
-let users = require('./users.json');
-const file = './users.json'
+// let usersMessaged = require('./usersMessaged.json')
+var file = './users.json'
 
 
 const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasking the grass", "Smelling on leaves"]
@@ -27,15 +27,51 @@ client.on('message', msg => {
       words.shift();
       if ( words[0] == "register" ) {
 
-        // This is where users are supposed to get added to the jsonfile
+        // We take the current file and read it
+        var users_current = jsonfile.readFileSync(file);
 
-        const username = "member.user.username"
-        const discrim = "member.user.discriminator"
+        // We take the user input to add him to the list
+        var id = msg.author.id;
+        var time = "13:40";
 
-        users = [...users, { username, discrim }]
-        jsonfile.writeFileSync(file, users)
+        // Adding the new user to the list
+        users_current = [...users_current, { id, time }]
+
+        // Writing the new list with the new user back into the file
+        jsonfile.writeFileSync(file, users_current, {spaces: 2})
+
+        // Default layout of the users.json
+        // [
+        //   {
+        //     "id": "1337",
+        //     "time": "13:37"
+        //   }
+        // ]
 
       }
+
+      if ( words[0] == "quit") {
+
+        // We take the current file and read it
+        var users_current = jsonfile.readFileSync(file);
+
+        // We take the user id and prepare it to get removed from the list
+        var id_removed = msg.author.id
+
+        // Initial process of removing user from list (https://stackoverflow.com/a/21150476)
+        var users_updated = [];
+        for (var i in users_current)
+          if(users_current[i].id != id_removed)
+            users_updated[users_updated.length] = users_current[i]
+
+        // Replacing old users with new ones
+        users_current = users_updated;
+
+        // Writing the new list without the user back into the file
+        jsonfile.writeFileSync(file, users_current, {spaces: 2})
+
+      }
+
     }
   }
 
@@ -215,7 +251,8 @@ client.on('message', msg => {
         const embed = new Discord.RichEmbed()
           // .setTitle("This is your title, it can hold 256 characters")
           .setAuthor("Kachelmann", "https://i.imgur.com/kh5TlcX.png")
-          .setColor(0x8DE969)
+          // .setColor(0x8DE969)
+          .setColor(0xFFFFFF)
           .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
           .setFooter("Sourcecode on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
           .setImage(r.uri.href)
