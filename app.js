@@ -15,7 +15,7 @@ var file = './users.json'
 // Random response everytime weather gets requested
 const lookup = ["Searching for city called", "Travelling to", "Searching around for", "Contacting my friends in", "Tinkering around in", "Looking at the sky in", "Feeling my senses in", "Tasting the grass in", "Searching the far lands for"]
 
-const hello = ["hey", "hallo", "hello", "what's up", "hi", "sup", "how are you", "whats up", "yo"]
+const hello = ["hey", "hallo", "hello", "what's up", "hi", "sup", "how are you", "whats up", "yo", "help", "info", "tutorial"]
 
 // Logging in console when bot connected
 client.on('ready', function() {
@@ -128,11 +128,15 @@ client.on('message', msg => {
         users = [...users, { id, city, time, units, type }]
 
         // Writing the new list with the new user back into the file
-        jsonfile.writeFileSync(file, users, {spaces: 2})
+        jsonfile.writeFileSync(file, users, {spaces: 2});
+
+        clientMessage (id, city, type, units);
 
         console.log(colors.green('[' + moment().format('LTS') + 'Added ' + msg.author.username + ' to the messaging list!'));
 
-        msg.channel.send(":white_check_mark: **Success!**\n\nI have added you to my list with the following settings:\n``` UserID  :  " + msg.author.id +"\n   Time  :  " + time + "\n   City  :  " + city + "```\n***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*")
+        msg.channel.send(":white_check_mark: **Success!**\n\nI have added you to my list!\nYou will now receive a weather report for " + city + " every day at " + time + "!\n*(You can alway write \"remove me\" to stop getting messages!)*");
+        msg.channel.send("*Requesting example message...*")
+
       }
 
       if (msg.content.toLowerCase().startsWith("remove me")) {
@@ -158,7 +162,7 @@ client.on('message', msg => {
 
         console.log(colors.green('[' + moment().format('LTS') + 'Removed ' + msg.author.username + ' from the messaging list!'));
 
-        msg.channel.send(":white_check_mark: **Success!**\n\nYou have been removed from my list and will no longer receive any messages!\n\n***Remember:** You can always return by simply typing `Add me 10:00 AM Berlin` for example!*")
+        msg.channel.send(":white_check_mark: **Successfully removed <@" + msg.author.id + "> from my list!**")
 
       }
 
@@ -325,7 +329,7 @@ function clientMessage (id, city, type, units) {
         .setAuthor("Kachelmann", "https://i.imgur.com/kh5TlcX.png")
         // .setColor(0x8DE969)
         .setColor(0xFFFFFF)
-        .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n*- Weather data for " + moment().format('MMMM Do YYYY') + " -*")
+        .setDescription("Here's your requested weather report for **[" + info.name + "](https://www.google.de/maps/place/" + info.name + ")** (" + info.sys.country + " " + flag + ") \n\nDon't want any more weather reports?\n- Simply type \"remove me\"!")
         .setFooter("Source code on GitHub.com/4dams | Kachelmann Bot @ " + moment().format('LTS'), "https://i.imgur.com/9z8sY3w.png")
         .attachFile(res.body)
         .setImage('attachment://file.jpg')
@@ -333,13 +337,13 @@ function clientMessage (id, city, type, units) {
         .addField("__Current Weather:__", "**" + weather.main + " " +  weather_icon + "**\n*(" + weather_disc + ")*", true)
         .addField("__Current Temperature:__", "It's currently **" + info.main.temp + "°C** " + temp_icon + " \n*(" + info.main.temp_min + "°C ~ " + info.main.temp_max + "°C)*", true)
         .addField("__Sunrise and Sunset:__", "Sunrise: **" + sunrise + "** :sunny:️\nSunset: **" + sunset + "** :crescent_moon:", true)
-        .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h** at **" + info.wind.deg + "° :leaves:**", true)
+        .addField("__Air and Wind:__", "Humidity: **" + info.main.humidity + "%** :droplet:\nWind: **" + info.wind.speed + " km/h**:leaves:", true)
         .addBlankField()
         .addField("__Today's image:__", "Here's the image of the day, just fitting for " + weather.description + "!")
 
         if ( type == "user" ) {
           client.users.get(id).send({embed});
-          client.users.get(id).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*");
+          //client.users.get(id).send("***Remember:** You can always stop receiving messages by simply typing \"Remove me\"!*");
         }
 
         if ( type == "channel" ) {
