@@ -8,8 +8,7 @@
   },
 
   "weather_api": {
-    "key": "your openweathermap api key here",
-    "units": "metric"
+    "key": "your openweathermap api key here"
   }
 
 }
