@@ -22,6 +22,7 @@ If you want to receive your own weather reports, just join the official Kachelma
 
 - [ ] Units support (Metric and Imperial)
 - [ ] Command to list all list entries
+- [ ] Admin command to see complete list, or get link to complete online list
 
 ## Built With
 
