@@ -5,7 +5,7 @@
 
 ## Preview
 
-<p align="center"><img src="https://i.4da.ms/3284d42.png"></p>
+<p align="center"><img src="https://i.4da.ms/3284d4X2.png"></p>
 
 ## Note
 
